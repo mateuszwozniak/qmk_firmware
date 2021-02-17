@@ -7,6 +7,16 @@
 #define NUM 2 // numeric
 #define MDIA 3 // media keys
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case RALT_T(KC_EQL):
+            return 80;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
   EPRM,
