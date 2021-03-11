@@ -2,15 +2,69 @@
 #include "version.h"
 
 
-#define BASE 0 // default layer
-#define SYMB 1 // symbols
-#define NUM 2 // numeric
-#define MDIA 3 // media keys
+#define _CR_BASE 0
+#define _CR_SYMB 1
+#define _CR_NUM 2
+#define _CR_FN 3
+#define _LAYERS 4
+
+#define BASE 5 // default layer
+#define SYMB 6 // symbols
+#define NUM 7 // numeric
+#define MDIA 8 // media keys
+
+// Shortcut to make keymap more readable
+#define SYM_L   MO(_SYMB)
+
+#define KC_ALAS LALT_T(KC_PAST)
+#define KC_CTPL LCTL_T(KC_BSLS)
+
+#define KC_NAGR LT(_NAV, KC_GRV)
+#define KC_NAMI LT(_NAV, KC_MINS)
+
+#define KC_ADEN LT(_ADJUST, KC_END)
+#define KC_ADPU LT(_ADJUST, KC_PGUP)
+
+// matt's aliases
+#define KC_SYMMIN LT(_SYMB, KC_MINS)
+#define KC_CTLBSP CTL_T(KC_BSPC)
+#define L_SEL LT(_LAYERS, KC_GRAVE)
+#define L_FN_ENT LT(_FN, KC_ENT)
+#define L_NUM_SP LT(_NUM, KC_SPC)
+#define KC_ALT_EQ RALT_T(KC_EQL)
+
+#define DF_BASE DF(BASE)
+#define DF_CORNE DF(_CR_BASE)
+
+#define CR_SYMMIN LT(_CR_SYMB, KC_MINS)
+#define CR_FN_ENT LT(_CR_FN, KC_ENT)
+#define CR_NUM_SP LT(_CR_NUM, KC_SPC)
+#define CR_LG_SYM LGUI_T(OSL(_CR_SYMB))
+#define CMD_ENT LGUI(KC_ENT)
+
+#define MEH_GRV MEH(KC_GRAVE)
+#define MEH_0 MEH(KC_0)
+#define MEH_1 MEH(KC_1)
+#define MEH_2 MEH(KC_2)
+#define MEH_3 MEH(KC_3)
+#define MEH_4 MEH(KC_4)
+#define MEH_5 MEH(KC_5)
+#define MEH_6 MEH(KC_6)
+#define MEH_7 MEH(KC_7)
+#define MEH_8 MEH(KC_8)
+#define MEH_9 MEH(KC_9)
+
+#define ALT_UP RALT(KC_UP)
+#define ALT_LE RALT(KC_LEFT)
+#define ALT_RI RALT(KC_RIGHT)
+
+
+
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case RALT_T(KC_EQL):
-            return 80;
+            return 95;
         default:
             return TAPPING_TERM;
     }
@@ -25,6 +79,137 @@ enum custom_keycodes {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
+/* Keymap 0: Basic layer
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |------|           |------|      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |        |
+ *                                 ,------|------|------|       |------+--------+------.
+ *                                 |      |      |      |       |      |        |      |
+ *                                 |      |      |------|       |------|        |      |
+ *                                 |      |      |      |       |      |        |      |
+ *                                 `--------------------'       `----------------------'
+ */
+
+[_CR_BASE] = LAYOUT_ergodox(
+        // left hand
+        _______,        _______,      _______,        _______,  _______,  _______,  _______,
+        KC_TAB,         KC_Q,         KC_W,           KC_E,     KC_R,     KC_T,     _______,
+        KC_ESC,         KC_A,         KC_S,           KC_D,     KC_F,     KC_G,
+        KC_LSPO,        KC_Z,         KC_X,           KC_C,     KC_V,     KC_B,     _______,
+        _______,        _______,     _______,        _______,  _______,
+                                                                                _______,  _______,
+                                                                                          _______,
+                                                                      CR_SYMMIN,KC_LGUI, KC_CTLBSP,
+        // right hand
+             _______,       _______,   _______,        _______,   _______,    _______,     _______,
+             _______,       KC_Y,      KC_U,           KC_I,      KC_O,       KC_P,        KC_BSLS,
+                            KC_H,      KC_J,           KC_K,      KC_L,       KC_SCLN,     KC_QUOT,
+             _______,       KC_N,      KC_M,           KC_COMM,   KC_DOT,     KC_SLSH,     KC_RSPC,
+                                       _______,        _______,   _______,    _______,     _______,
+             _______,        _______,
+             _______,
+             CR_FN_ENT,    CR_NUM_SP,    KC_ALT_EQ
+),
+
+[_CR_SYMB] = LAYOUT_ergodox(
+        // left hand
+        RESET,          _______,      _______,        _______,  _______,  _______,  _______,
+        CMD_ENT,        KC_EXLM,      KC_AT,          KC_HASH,  KC_DLR,   KC_PERC,  _______,
+        KC_ENT,         KC_GRAVE,     KC_UNDS,        KC_LCBR,  KC_RCBR,  KC_GRV,
+        _______,        KC_TILDE,     _______,        KC_LBRC,  KC_RBRC,  KC_PLUS,  _______,
+        _______,        _______,     _______,        _______,  _______,
+                                                                                _______,  _______,
+                                                                                          _______,
+                                                                      _______,  _______,  _______,  
+        // right hand
+             _______,       _______,   _______,        _______,   _______,    _______,     _______,
+             _______,       KC_CIRC,   KC_AMPR,        KC_ASTR,   KC_UNDS,    _______,     _______,
+                            KC_LEFT,   KC_DOWN,        KC_UP,     KC_RIGHT,   _______,     _______,
+             _______,       _______,   _______,        _______,   _______,    _______,     _______,
+                                       _______,        _______,   _______,    _______,     _______,
+             _______,        _______,
+             _______,
+             _______,      _______,      _______  
+),
+
+[_CR_NUM] = LAYOUT_ergodox(
+        // left hand
+        _______,        _______,      _______,        _______,  _______,  _______,  _______,
+        _______,        MEH_1,        MEH_2,          MEH_3,    MEH_4,    MEH_5,    _______,
+        _______,        MEH_6,        MEH_7,          MEH_8,    MEH_9,    MEH_0,  
+        _______,        KC_MPLY,      KC_MPRV,        KC_MNXT,  KC_VOLU,  KC_VOLD,  _______,
+        _______,        _______,     _______,        _______,  _______,
+                                                                                _______,  _______,
+                                                                                          _______,
+                                                                      _______,  _______,  _______,  
+        // right hand
+             _______,       _______,   _______,        _______,   _______,    _______,     _______,
+             _______,       _______,   KC_7,           KC_8,      KC_9,       KC_PLUS,     ALT_UP,
+                            KC_COMM,   KC_4,           KC_5,      KC_6,       KC_7,        ALT_LE, 
+             _______,       KC_DOT,    KC_1,           KC_2,      KC_3,       KC_0,        ALT_RI,
+                                       _______,        _______,   _______,    _______,     _______,
+             _______,        _______,
+             _______,
+             _______,      _______,      _______  
+),
+
+[_CR_FN] = LAYOUT_ergodox(
+        // left hand
+        _______,        _______,      _______,        _______,  _______,  _______,  _______,
+        _______,        _______,      _______,        _______,  _______,  _______,  _______,
+        _______,        _______,      _______,        _______,  _______,  _______,
+        _______,        _______,      _______,        _______,  _______,  _______,  _______,
+        _______,        _______,     _______,        _______,  _______,
+                                                                                _______,  _______,
+                                                                                          _______,
+                                                                      _______,  _______,  _______,  
+        // right hand
+             _______,       _______,   _______,        _______,   _______,    _______,     RESET,  
+             _______,       _______,   KC_F9,          KC_F10,    KC_F11,     KC_F12,     _______,
+                            _______,   KC_F5,          KC_F6,     KC_F7,      KC_F8,       _______,
+             _______,       _______,   KC_F1,          KC_F2,     KC_F3,      KC_F4,       _______,
+                                       _______,        _______,   _______,    _______,     _______,
+             _______,        _______,
+             _______,
+             _______,      _______,      _______  
+),
+
+
+[_LAYERS] = LAYOUT_ergodox(
+        // left hand
+        _______,        _______,      _______,        _______,  _______,  _______,  _______,
+        _______,        _______,      _______,        _______,  _______,  _______,  _______,
+        _______,        _______,      _______,        _______,  _______,  _______,
+        _______,        _______,      _______,        _______,  _______,  _______,  _______,
+        _______,        _______,     _______,        _______,  _______,
+                                                                                _______,  _______,
+                                                                                          _______,
+                                                                      _______,  _______,  _______,  
+        // right hand
+             _______,       DF_BASE,   DF_CORNE,       _______,   _______,    _______,     _______,
+             _______,       _______,   _______,        _______,   _______,    _______,    _______,
+                            _______,   _______,        _______,   _______,    _______,     _______,
+             _______,       _______,   _______,        _______,   _______,    _______,     _______,
+                                       _______,        _______,   _______,    _______,     _______,
+             _______,        _______,
+             _______,
+             _______,      _______,      _______  
+),
+
+
+
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
