@@ -28,7 +28,8 @@ enum layers {
     _QWERTY = 0,
     _SYMB,
     _NUM,
-    _FN
+    _FN,
+    __LAST
 };
 
 // Shortcut to make keymap more readable
@@ -158,7 +159,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //                              _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 
   //,──────────────────────────────────────────────────────────────┐                         ┌──────────────────────────────────────────────────────────────.
-     MEH_GRV ,MEH_1   ,MEH_2   ,MEH_3   ,MEH_4   ,MEH_5                                               ,_______ ,KC_7    ,KC_8    ,KC_9    ,KC_PLUS ,ALT_UP  ,
+     RGB_TOG ,MEH_1   ,MEH_2   ,MEH_3   ,MEH_4   ,MEH_5                                               ,_______ ,KC_7    ,KC_8    ,KC_9    ,KC_PLUS ,ALT_UP  ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      _______ ,MEH_6   ,MEH_7   ,MEH_8   ,MEH_9   ,MEH_0                                               ,KC_COMM ,KC_4    ,KC_5    ,KC_6    ,KC_7    ,ALT_LE  ,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -219,9 +220,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //     ),
 };
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _SYMB, _NUM, _FN);
-}
+// layer_state_t layer_state_set_user(layer_state_t state) {
+//     return update_tri_layer_state(state, _SYMB, _NUM, _FN);
+// }
 
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
@@ -311,3 +312,40 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     }
 }
 #endif
+
+
+#ifdef RGBLIGHT_LAYERS
+const rgblight_segment_t PROGMEM my_qwerty_layer[] = RGBLIGHT_LAYER_SEGMENTS( {0, 20, HSV_CYAN} );
+const rgblight_segment_t PROGMEM my_symb_layer[] = RGBLIGHT_LAYER_SEGMENTS( {0, 20, HSV_GREEN} );
+const rgblight_segment_t PROGMEM my_num_layer[] = RGBLIGHT_LAYER_SEGMENTS( {0, 20, HSV_PURPLE} );
+const rgblight_segment_t PROGMEM my_fn_layer[] = RGBLIGHT_LAYER_SEGMENTS( {0, 20, HSV_YELLOW} );
+
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    my_qwerty_layer,
+    my_symb_layer,
+    my_num_layer,
+    my_fn_layer
+);
+#endif
+
+#ifdef RGBLIGHT_ENABLE
+
+void keyboard_post_init_user(void) {
+    rgblight_sethsv_noeeprom(HSV_CYAN);
+    // keyboard_post_init_rgb();
+#ifdef RGBLIGHT_LAYERS
+    rgblight_layers = my_rgb_layers;
+#else
+    rgblight_sethsv_noeeprom(HSV_CYAN);
+#endif
+}
+#endif
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+#ifdef RGBLIGHT_LAYERS
+    for (int i = _QWERTY; i < __LAST; i++) {
+        rgblight_set_layer_state(i, layer_state_cmp(state, i));
+    }
+#endif
+    return state;
+}
