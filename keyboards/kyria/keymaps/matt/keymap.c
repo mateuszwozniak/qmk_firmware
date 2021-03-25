@@ -45,8 +45,9 @@ enum layers {
 #define KC_ADPU LT(_ADJUST, KC_PGUP)
 
 // matt's aliases
-#define KC_SYMENT LT(_SYMB, KC_ENT)
+#define KC_SYMMIN LT(_SYMB, KC_MINS)
 #define KC_CTLBSP CTL_T(KC_BSPC)
+#define MEH_ENT MEH_T(KC_ENT)
 #define L_SEL LT(_LAYERS, KC_GRAVE)
 #define L_FN_ENT LT(_FN, KC_ENT)
 #define L_NUM_SP LT(_NUM, KC_SPC)
@@ -104,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSPO ,KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,KC_F1   ,XXXXXXX ,        KC_F12  ,XXXXXXX ,KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSPC ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-                       XXXXXXX ,KC_MEH  ,     KC_SYMENT,   KC_LGUI ,KC_CTLBSP,       FN_ENT  ,NUM_SP  ,    KC_ALT_EQ,    KC_MINS, KC_PLUS                   
+                       XXXXXXX ,MEH_ENT ,    KC_SYMMIN,    KC_LGUI ,KC_CTLBSP,       FN_ENT  ,NUM_SP  ,    KC_ALT_EQ,    KC_MINS, KC_PLUS                   
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
 
     ),
