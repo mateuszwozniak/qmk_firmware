@@ -29,6 +29,7 @@ enum layers {
     _SYMB,
     _NUM,
     _FN,
+    _MEH,
     __LAST
 };
 
@@ -56,8 +57,9 @@ enum layers {
 #define DF_BASE DF(_QWERTY)
 #define DF_CORNE DF(_CR_BASE)
 
-#define FN_ENT LT(_FN, KC_ENT)
-#define NUM_SP LT(_NUM, KC_SPC)
+#define NUM_ENT LT(_NUM, KC_ENT)
+#define FN_SP LT(_FN, KC_SPC)
+#define LMEH_BS LT(_MEH, KC_BSPC)
 #define CMD_ENT LGUI(KC_ENT)
 
 #define MEH_GRV MEH(KC_GRAVE)
@@ -71,6 +73,12 @@ enum layers {
 #define MEH_7 MEH(KC_7)
 #define MEH_8 MEH(KC_8)
 #define MEH_9 MEH(KC_9)
+
+#define MEH_A MEH(KC_A)
+#define MEH_B MEH(KC_B)
+#define MEH_C MEH(KC_C)
+#define MEH_D MEH(KC_D)
+#define MEH_E MEH(KC_E)
 
 #define ALT_UP RALT(KC_UP)
 #define ALT_LE RALT(KC_LEFT)
@@ -105,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSPO ,KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,KC_F1   ,XXXXXXX ,        KC_F12  ,XXXXXXX ,KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,KC_RSPC ,
   //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
-                       XXXXXXX ,MEH_ENT ,    KC_SYMMIN,    KC_LGUI ,KC_CTLBSP,       FN_ENT  ,NUM_SP  ,    KC_ALT_EQ,    KC_MINS, KC_PLUS                   
+                       MEH_ENT ,KC_LCTL ,    KC_SYMMIN,    KC_LGUI ,LMEH_BS ,        NUM_ENT ,FN_SP   ,    KC_ALT_EQ,    KC_MINS, KC_PLUS                   
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
 
     ),
@@ -199,6 +207,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                        _______ ,_______ ,     _______ ,    _______ ,_______ ,        _______ ,_______ ,    _______ ,     _______ ,_______                  
   //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
     ),
+
+    [_MEH] = LAYOUT(
+
+  //,──────────────────────────────────────────────────────────────┐                         ┌──────────────────────────────────────────────────────────────.
+     _______ ,MEH_1   ,MEH_2   ,MEH_3   ,MEH_4   ,MEH_5                                               ,_______ ,_______, _______ ,_______ ,_______ ,_______ ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______ ,MEH_6   ,MEH_7   ,MEH_8   ,MEH_9   ,MEH_0                                               ,_______ ,_______, _______ ,_______ ,_______ ,_______ ,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┐       ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______ ,MEH_A   ,MEH_B   ,MEH_C   ,MEH_D   ,MEH_E   ,_______ ,_______ ,        _______ ,_______ ,_______ ,_______, _______ ,_______ ,_______ ,_______ ,
+  //├────────┼────────┼────────┼────────┼────┬───┴────┬───┼────────┼────────┤       ├────────┼────────┼───┬────┴───┬────┼────────┼────────┼────────┼────────┤
+                       _______ ,_______ ,     _______ ,    _______ ,_______ ,        _______ ,_______ ,    _______ ,     _______ ,_______                  
+  //└────────┴────────┴────────┴────────┘    └────────┘   └────────┴────────┘       └────────┴────────┘   └────────┘    └────────┴────────┴────────┴────────┘
+    ),
 // /*
 //  * Layer template
 //  *
@@ -264,14 +285,14 @@ static void render_status(void) {
         case _QWERTY:
             oled_write_P(PSTR("Default\n"), false);
             break;
-        case _LOWER:
-            oled_write_P(PSTR("Lower\n"), false);
+        case _SYMB:
+            oled_write_P(PSTR("Symbols\n"), false);
             break;
-        case _RAISE:
-            oled_write_P(PSTR("Raise\n"), false);
+        case _NUM:
+            oled_write_P(PSTR("Numeric\n"), false);
             break;
-        case _ADJUST:
-            oled_write_P(PSTR("Adjust\n"), false);
+        case _FN:
+            oled_write_P(PSTR("Function\n"), false);
             break;
         default:
             oled_write_P(PSTR("Undefined\n"), false);
